@@ -1,0 +1,5 @@
+-rwxrwxr-x 1 jponieck jponieck 36712 May 12 22:56 pipex
+-rw-rw-r-- 1 jponieck jponieck  1697 May 11 20:51 pipex (copy).c
+-rw-rw-r-- 1 jponieck jponieck  2432 May 12 22:56 pipex.c
+-rw-rw-r-- 1 jponieck jponieck  1131 May 11 21:15 pipex.h
+-rw-rw-r-- 1 jponieck jponieck  9168 May 12 22:56 pipex.o
