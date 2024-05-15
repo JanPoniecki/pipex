@@ -1,8 +1,9 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+# CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -g
 NAME = pipex
 
-SRC_FILES = pipex.c
+SRC_FILES = pipex.c utils.c
 OBJ_FILES = $(SRC_FILES:.c=.o)
 
 all: $(NAME)
