@@ -6,23 +6,29 @@
 /*   By: jponieck <jponieck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:56:44 by jponieck          #+#    #+#             */
-/*   Updated: 2024/05/16 11:02:12 by jponieck         ###   ########.fr       */
+/*   Updated: 2024/05/16 13:21:04 by jponieck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*find_path(char *program, t_vars *vars)
+char	*find_path(char **program, t_vars *vars)
 {
 	int		i;
 	char	*curr_path;
 	char	*prog_path;
 
-	prog_path = ft_strjoin("/", program);
+	if (!program)
+		return (NULL);
+	prog_path = ft_strjoin("/", program[0]);
+	if (!prog_path)
+		return (NULL);
 	i = 0;
 	while (vars->paths[i])
 	{
 		curr_path = ft_strjoin(vars->paths[i], prog_path);
+		if (!curr_path)
+			return (NULL);
 		if (access(curr_path, F_OK) == 0)
 		{
 			free(prog_path);
@@ -32,21 +38,31 @@ char	*find_path(char *program, t_vars *vars)
 		i++;
 	}
 	free(prog_path);
-	return (NULL);
+	return ("no_prog");
 }
 
 void	test_args(int argc, char **argv, t_vars *vars)
 {
 	if (argc != 5)
 	{
-		ft_putstr_fd("invalid number of arguments\n", 2);
-		clean_up(vars, argv[0]);
+		ft_putstr_fd("pipex: invalid number of arguments\n", 2);
+		clean_up(vars, NULL, 1);
 	}
-	if (!vars->command_1)
-		exit_and_free(0, 2, "allocation error\n");
+	if (!vars->command_1 || !vars->command_2 || !vars->paths)
+	{
+		ft_putstr_fd("pipex: allocation error\n", 2);
+		clean_up(vars, NULL, 1);
+	}
 }
 
-void	clean_up(t_vars *vars, char *message)
+void	print_error(char *mes1, char *mes2)
+{
+		ft_putstr_fd("pipex: command not found: ", 2);
+		ft_putstr_fd(mes2, 2);
+		ft_putstr_fd("\n", 2);
+}
+
+void	clean_up(t_vars *vars, char *message, int is_error)
 {
 	if (message)
 		perror(message);
@@ -56,10 +72,10 @@ void	clean_up(t_vars *vars, char *message)
 		free_split(vars->command_2);
 	if (vars->paths)
 		free_split(vars->paths);
-	if (vars->prog_1)
+	if (vars->prog_1 && ft_strncmp("no_prog", vars->prog_1, 7) != 0)
 		free(vars->prog_1);
-	if (vars->prog_2)
+	if (vars->prog_2 && ft_strncmp("no_prog", vars->prog_2, 7) != 0)
 		free(vars->prog_2);
-	if (message)
-		exit (1);
+	if (is_error != 0)
+		exit (is_error);
 }
