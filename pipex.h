@@ -6,7 +6,7 @@
 /*   By: jponieck <jponieck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:19:47 by jponieck          #+#    #+#             */
-/*   Updated: 2024/05/15 22:13:49 by jponieck         ###   ########.fr       */
+/*   Updated: 2024/05/16 11:03:16 by jponieck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@ typedef struct s_vars
 	int		in_file;
 	int		out_file;
 	int		p_fd[2];
+	char	**paths;
 }	t_vars;
 
-void	clean_up(t_vars *vars);
-void	test_args(int argc, t_vars *vars);
-char	*find_path(char *program);
+void	clean_up(t_vars *vars, char *message);
+void	test_args(int argc, char **argv, t_vars *vars);
+char	*find_path(char *program, t_vars *vars);
 
 #endif
