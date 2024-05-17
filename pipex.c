@@ -6,21 +6,26 @@
 /*   By: jponieck <jponieck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:21:29 by jponieck          #+#    #+#             */
-/*   Updated: 2024/05/16 12:45:01 by jponieck         ###   ########.fr       */
+/*   Updated: 2024/05/17 21:06:04 by jponieck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static void	execute_p1(t_vars *vars)
+static void	execute_p1(t_vars *vars, char **argv)
 {
-	close(vars->p_fd[0]);
-	dup2(vars->in_file, 0);
-	close(vars->in_file);
-	dup2(vars->p_fd[1], 1);
-	close(vars->p_fd[1]);
-	if (execve(vars->prog_1, vars->command_1, NULL) != 0)
-		perror("pipex");
+	if (vars->in_file < 0)
+		return;
+	else
+	{
+		close(vars->p_fd[0]);
+		dup2(vars->in_file, 0);
+		close(vars->in_file);
+		dup2(vars->p_fd[1], 1);
+		close(vars->p_fd[1]);
+		if (execve(vars->prog_1, vars->command_1, NULL) != 0)
+			print_error("Command '", vars->command_1[0], "' not found.", 0);
+	}
 }
 
 static void	execute_p2(t_vars *vars)
@@ -31,7 +36,7 @@ static void	execute_p2(t_vars *vars)
 	dup2(vars->out_file, 1);
 	close(vars->out_file);
 	if (execve(vars->prog_2, vars->command_2, NULL) != 0)
-		perror("pipex");
+		print_error("Command '", vars->command_2[0], "' not found.", 0);
 }
 
 static void	init_vars(t_vars *vars, char **argv, char **envp)
@@ -46,24 +51,26 @@ static void	init_vars(t_vars *vars, char **argv, char **envp)
 		i++;
 	}
 	vars->in_file = open(argv[1], O_RDONLY);
+	if (vars->in_file < 0)
+		print_error("pipex: ", argv[1], ": ", 1);
 	vars->out_file = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	vars->command_1 = ft_split(argv[2], ' ');
 	vars->command_2 = ft_split(argv[3], ' ');
 	vars->prog_1 = find_path(vars->command_1, vars);
-	if (ft_strncmp("no_prog", vars->prog_1, 7) == 0)
-		print_error("command not found", vars->command_1[0]);
+	// if (ft_strncmp("no_prog", vars->prog_1, 7) == 0)
+	// 	print_error("pipex: ", "command not found", vars->command_1[0]);
 	vars->prog_2 = find_path(vars->command_2, vars);
-	if (ft_strncmp("no_prog", vars->prog_2, 7) == 0)
-		print_error("command not found", vars->command_2[0]);
+	// if (ft_strncmp("no_prog", vars->prog_2, 7) == 0)
+	// 	print_error("pipex: ", "command not found", vars->command_2[0]);
 }
 
-static void	run_commands(t_vars *vars)
+static void	run_commands(t_vars *vars, char **argv)
 {
 	int	pid_1;
 
 	pid_1 = fork();
 	if (pid_1 == 0)
-		execute_p1(vars);
+		execute_p1(vars, argv);
 	else
 	{
 		waitpid(pid_1, NULL, 0);
@@ -81,7 +88,7 @@ int	main(int argc, char **argv, char **envp)
 	pipe(vars.p_fd);
 	pid_0 = fork();
 	if (pid_0 == 0)
-		run_commands(&vars);
+		run_commands(&vars, argv);
 	close(vars.p_fd[0]);
 	close(vars.p_fd[1]);
 	waitpid(pid_0, NULL, 0);

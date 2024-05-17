@@ -6,7 +6,7 @@
 /*   By: jponieck <jponieck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:56:44 by jponieck          #+#    #+#             */
-/*   Updated: 2024/05/16 13:21:04 by jponieck         ###   ########.fr       */
+/*   Updated: 2024/05/17 20:57:11 by jponieck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,14 @@ void	test_args(int argc, char **argv, t_vars *vars)
 	}
 }
 
-void	print_error(char *mes1, char *mes2)
+void	print_error(char *mes1, char *mes2, char *mes3, int perr)
 {
-		ft_putstr_fd("pipex: command not found: ", 2);
-		ft_putstr_fd(mes2, 2);
+	ft_putstr_fd(mes1, 2);
+	ft_putstr_fd(mes2, 2);
+	ft_putstr_fd(mes3, 2);
+	if (perr == 1)
+		perror("");
+	else
 		ft_putstr_fd("\n", 2);
 }
 
