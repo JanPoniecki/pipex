@@ -6,7 +6,7 @@
 /*   By: jponieck <jponieck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 20:56:44 by jponieck          #+#    #+#             */
-/*   Updated: 2024/05/17 20:57:11 by jponieck         ###   ########.fr       */
+/*   Updated: 2024/05/20 22:10:10 by jponieck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*find_path(char **program, t_vars *vars)
 	return ("no_prog");
 }
 
-void	test_args(int argc, char **argv, t_vars *vars)
+void	test_args(int argc, t_vars *vars)
 {
 	if (argc != 5)
 	{

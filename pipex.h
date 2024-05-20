@@ -6,7 +6,7 @@
 /*   By: jponieck <jponieck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:19:47 by jponieck          #+#    #+#             */
-/*   Updated: 2024/05/17 20:56:24 by jponieck         ###   ########.fr       */
+/*   Updated: 2024/05/20 22:09:49 by jponieck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_vars
 }	t_vars;
 
 void	clean_up(t_vars *vars, char *message, int is_error);
-void	test_args(int argc, char **argv, t_vars *vars);
+void	test_args(int argc, t_vars *vars);
 char	*find_path(char **program, t_vars *vars);
 void	print_error(char *mes1, char *mes2, char *mes3, int perr);
 

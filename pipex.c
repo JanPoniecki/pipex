@@ -6,13 +6,13 @@
 /*   By: jponieck <jponieck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:21:29 by jponieck          #+#    #+#             */
-/*   Updated: 2024/05/17 21:06:04 by jponieck         ###   ########.fr       */
+/*   Updated: 2024/05/20 22:09:15 by jponieck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static void	execute_p1(t_vars *vars, char **argv)
+static void	execute_p1(t_vars *vars)
 {
 	if (vars->in_file < 0)
 		return;
@@ -57,20 +57,16 @@ static void	init_vars(t_vars *vars, char **argv, char **envp)
 	vars->command_1 = ft_split(argv[2], ' ');
 	vars->command_2 = ft_split(argv[3], ' ');
 	vars->prog_1 = find_path(vars->command_1, vars);
-	// if (ft_strncmp("no_prog", vars->prog_1, 7) == 0)
-	// 	print_error("pipex: ", "command not found", vars->command_1[0]);
 	vars->prog_2 = find_path(vars->command_2, vars);
-	// if (ft_strncmp("no_prog", vars->prog_2, 7) == 0)
-	// 	print_error("pipex: ", "command not found", vars->command_2[0]);
 }
 
-static void	run_commands(t_vars *vars, char **argv)
+static void	run_commands(t_vars *vars)
 {
 	int	pid_1;
 
 	pid_1 = fork();
 	if (pid_1 == 0)
-		execute_p1(vars, argv);
+		execute_p1(vars);
 	else
 	{
 		waitpid(pid_1, NULL, 0);
@@ -84,11 +80,11 @@ int	main(int argc, char **argv, char **envp)
 	int		pid_0;
 
 	init_vars(&vars, argv, envp);
-	test_args(argc, argv, &vars);
+	test_args(argc, &vars);
 	pipe(vars.p_fd);
 	pid_0 = fork();
 	if (pid_0 == 0)
-		run_commands(&vars, argv);
+		run_commands(&vars);
 	close(vars.p_fd[0]);
 	close(vars.p_fd[1]);
 	waitpid(pid_0, NULL, 0);
