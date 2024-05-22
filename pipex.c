@@ -6,7 +6,7 @@
 /*   By: jponieck <jponieck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 14:21:29 by jponieck          #+#    #+#             */
-/*   Updated: 2024/05/20 22:09:15 by jponieck         ###   ########.fr       */
+/*   Updated: 2024/05/22 23:13:06 by jponieck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ static void	init_vars(t_vars *vars, char **argv, char **envp)
 	if (vars->in_file < 0)
 		print_error("pipex: ", argv[1], ": ", 1);
 	vars->out_file = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	vars->command_1 = ft_split(argv[2], ' ');
-	vars->command_2 = ft_split(argv[3], ' ');
+	vars->command_1 = ft_split_except(argv[2], ' ', 39);
+	vars->command_2 = ft_split_except(argv[3], ' ', 39);
 	vars->prog_1 = find_path(vars->command_1, vars);
 	vars->prog_2 = find_path(vars->command_2, vars);
 }

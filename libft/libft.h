@@ -6,7 +6,7 @@
 /*   By: jponieck <jponieck@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/27 12:07:37 by nshahid           #+#    #+#             */
-/*   Updated: 2024/05/11 17:02:10 by jponieck         ###   ########.fr       */
+/*   Updated: 2024/05/22 22:41:45 by jponieck         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,6 @@ char	*get_from_buffer(char *buffer, int *mode);
 char	*alloc_error(int *mode);
 int		read_file(char *path, char **dest);
 void	exit_and_free(int args, int code, char *message, ...);
+char	**ft_split_except(char const *s, char c, char e);
 
 #endif
